@@ -1,0 +1,1 @@
+一个用于实时显示监控数据的app，使用retrofit从服务器得到数据，使用hellocharts库进行图标的显示
