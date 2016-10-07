@@ -1,15 +1,17 @@
 package com.example.qincong.environmentalmonitoring;
 
-import android.app.DownloadManager;
 import android.os.Bundle;
 import android.os.Message;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 
+import com.example.qincong.environmentalmonitoring.retrofit.Yeelink;
+import com.example.qincong.environmentalmonitoring.retrofit.Yeelink_anqi;
+import com.example.qincong.environmentalmonitoring.retrofit.Yeelink_co2;
+import com.example.qincong.environmentalmonitoring.retrofit.Yeelink_guangzhao;
+import com.example.qincong.environmentalmonitoring.retrofit.Yeelink_liuhuaqing;
+import com.example.qincong.environmentalmonitoring.retrofit.Yeelink_shidu;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import android.os.Handler;
@@ -17,10 +19,6 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import java.util.ListIterator;
-import java.util.logging.LogRecord;
 
 import lecho.lib.hellocharts.listener.LineChartOnValueSelectListener;
 import lecho.lib.hellocharts.model.Axis;
@@ -29,10 +27,8 @@ import lecho.lib.hellocharts.model.LineChartData;
 import lecho.lib.hellocharts.model.PointValue;
 import lecho.lib.hellocharts.model.ValueShape;
 import lecho.lib.hellocharts.model.Viewport;
-import lecho.lib.hellocharts.util.*;
 import lecho.lib.hellocharts.view.LineChartView;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import okhttp3.Response;
 import retrofit2.Call;
 import retrofit2.Retrofit;
@@ -77,6 +73,23 @@ public class TemperatureChart extends AppCompatActivity {
 
             }
         });
+        //Viewport viewport = lineChartView.getCurrentViewport();
+        //int n = data.getLines().get(0).getValues().size();
+        //viewport.left = n - 15;
+        //viewport.right = n - 1;
+        //viewport.bottom = (float) 24.6;
+        //viewport.top = (float) 26.8;
+        //lineChartView.setCurrentViewport(viewport);
+        //
+        //viewport = lineChartView.getMaximumViewport();
+        //n = data.getLines().get(0).getValues().size();
+        //viewport.left = 0;
+        //viewport.right = n - 1;
+        //viewport.bottom = (float) 0;
+        //viewport.top = (float) 50;
+        //
+        //lineChartView.setMaximumViewport(viewport);
+
         thread.start();
 //        List<Line> lines = new ArrayList<Line>();
 //        List<PointValue> values = new ArrayList<PointValue>();
@@ -96,21 +109,6 @@ public class TemperatureChart extends AppCompatActivity {
             boolean hasChanged = bundle.getBoolean("hasChanged");
             if (hasChanged) {
                 lineChartView.setLineChartData(data);
-                Viewport viewport = lineChartView.getCurrentViewport();
-                int n = data.getLines().get(0).getValues().size();
-                viewport.left = n - 15;
-                viewport.right = n - 1;
-                viewport.bottom = (float) 24.6;
-                viewport.top = (float) 26.8;
-
-                lineChartView.setCurrentViewport(viewport);
-                viewport = lineChartView.getMaximumViewport();
-                n = data.getLines().get(0).getValues().size();
-                viewport.left = 0;
-                viewport.right = n - 1;
-                viewport.bottom = (float) 0;
-                viewport.top = (float) 50;
-                lineChartView.setMaximumViewport(viewport);
             }
         }
     };
@@ -119,7 +117,7 @@ public class TemperatureChart extends AppCompatActivity {
         public void run() {
             Response response = null;
             List<Point> pointList=null;
-            while (true) {
+            if (true) {
 //                Request request = new Request.Builder()
 //                        .addHeader("U-ApiKey", "f94d4aac27210bdaef3a022a909a8a60")
 //                        .url("http://api.yeelink.net/v1.0/device/351124/sensor/394370.json?start=2016-10-03T00:04:43&end=2016-10-04T16:04:43&interval=30&page=1")
@@ -135,8 +133,35 @@ public class TemperatureChart extends AppCompatActivity {
                         .baseUrl("http://api.yeelink.net/")
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
-                Yeelink service = retrofit.create(Yeelink.class);
-                Call<List<Point>> repos = service.listPoint();
+                int flag=getIntent().getIntExtra("flag",0);
+                Call<List<Point>> repos=null;
+                switch (flag) {
+                    case 1:
+                        Yeelink service = retrofit.create(Yeelink.class);
+                        repos = service.listPoint();
+                        break;
+                    case 2:
+                        Yeelink_shidu service1 = retrofit.create(Yeelink_shidu.class);
+                        repos=service1.listPoint();
+                        break;
+                    case 3:
+                        Yeelink_anqi service2 = retrofit.create(Yeelink_anqi.class);
+                        repos=service2.listPoint();
+                        break;
+                    case 4:
+                        Yeelink_co2 service3 = retrofit.create(Yeelink_co2.class);
+                        repos=service3.listPoint();
+                        break;
+                    case 5:
+                        Yeelink_guangzhao service4 = retrofit.create(Yeelink_guangzhao.class);
+                        repos=service4.listPoint();
+                        break;
+                    case 6:
+                        Yeelink_liuhuaqing service5= retrofit.create(Yeelink_liuhuaqing.class);
+                        repos=service5.listPoint();
+                        break;
+                }
+
                 try {
                      pointList = repos.execute().body();
                 } catch (IOException e) {
@@ -158,7 +183,7 @@ public class TemperatureChart extends AppCompatActivity {
                     line.setHasLabels(hasLabels);
                     line.setHasLabelsOnlyForSelected(hasLabelForSelected);
                     line.setHasLines(hasLines);
-                    line.setHasPoints(hasPoints);
+                    line.setHasPoints(false);
 
                     List<Line> lines = new ArrayList<Line>();
                     lines.add(line);

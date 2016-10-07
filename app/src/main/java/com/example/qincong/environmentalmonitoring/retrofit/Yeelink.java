@@ -1,5 +1,6 @@
-package com.example.qincong.environmentalmonitoring;
+package com.example.qincong.environmentalmonitoring.retrofit;
 
+import com.example.qincong.environmentalmonitoring.Point;
 import java.util.List;
 
 import retrofit2.Call;
