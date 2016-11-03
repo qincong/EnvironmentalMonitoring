@@ -22,42 +22,42 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(MainActivity.this,TemperatureChart.class);
-                intent.putExtra("flag",1);
+                intent.putExtra("flag",0);
                 startActivity(intent);
             }
         });
         ((View)findViewById(R.id.two)).setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
                 Intent intent=new Intent(MainActivity.this,TemperatureChart.class);
-                intent.putExtra("flag",2);
+                intent.putExtra("flag",1);
                 startActivity(intent);
             }
         });
         ((View)findViewById(R.id.three)).setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
                 Intent intent=new Intent(MainActivity.this,TemperatureChart.class);
-                intent.putExtra("flag",3);
+                intent.putExtra("flag",2);
                 startActivity(intent);
             }
         });
         ((View)findViewById(R.id.four)).setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
                 Intent intent=new Intent(MainActivity.this,TemperatureChart.class);
-                intent.putExtra("flag",4);
+                intent.putExtra("flag",3);
                 startActivity(intent);
             }
         });
         ((View)findViewById(R.id.five)).setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
                 Intent intent=new Intent(MainActivity.this,TemperatureChart.class);
-                intent.putExtra("flag",5);
+                intent.putExtra("flag",4);
                 startActivity(intent);
             }
         });
         ((View)findViewById(R.id.six)).setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
                 Intent intent=new Intent(MainActivity.this,TemperatureChart.class);
-                intent.putExtra("flag",6);
+                intent.putExtra("flag",5);
                 startActivity(intent);
             }
         });
